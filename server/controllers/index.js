@@ -13,3 +13,11 @@ module.exports = {
   }
 };
 
+
+  // app.post('/data', function(req, res) {
+  //   connection.query
+  //   if (err) {
+  //     return;
+  //   }
+
+    //https://stackoverflow.com/questions/45891998/posting-form-data-to-mysql-using-nodejs-w-express
