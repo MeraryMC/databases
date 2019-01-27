@@ -16,7 +16,7 @@ describe('Persistent Node Chat Server', function() {
     });
     dbConnection.connect();
 
-       var tablename = "messages"; // TODO: fill this out  --users? (maybe needs all 3)?
+       var tablename = "messages"; // TODO: fill this out
 
     /* Empty the db table before each test so that multiple tests
      * (or repeated runs of the tests) won't screw each other up: */
@@ -58,7 +58,6 @@ describe('Persistent Node Chat Server', function() {
 
           // TODO: If you don't have a column named text, change this test.
           expect(results[0].message).to.equal('In mercy\'s name, three days is all I need.');
-
           done();
         });
       });
@@ -67,8 +66,8 @@ describe('Persistent Node Chat Server', function() {
 
   it('Should output all messages from the DB', function(done) {
     // Let's insert a message into the db
-       var queryString = "SELECT * from messages";
-       var queryArgs = [];
+       var queryString = 'INSERT INTO messages(text, userid, roomname) VALUES (?, ?, ?)';
+       var queryArgs =  ['Men like you can never change!', 1, 'main'];
     // TODO - The exact query string and query args to use
     // here depend on the schema you design, so I'll leave
     // them up to you. */

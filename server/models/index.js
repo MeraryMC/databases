@@ -3,38 +3,63 @@ var db = require('../db');
 
 module.exports = {
   messages: {
-    get: function () {
-      db.query("SELECT * from messages")
-      //from server-spec.js line 55: the first arg is the queryString,the 2nd arg is queryArgs (optional? right now empty array), the 3rd arg is a cb fn
-    }, // a function which produces all the messages
-    post: function () {} // a function which can be used to insert a message into the database
+    get: function (callback) {
+
+      var queryStr = 'select messages.ID, messages.message, messages.roomname, users.username \
+      from messages left outer join users on (messages.userID = users.ID) \
+      order by messages.ID desc';
+
+      db.query(queryStr, function(err, results) {
+        if (err) {
+          callback(err);
+        } else {
+          callback(results);
+        }
+      });
+    },
+
+    post: function (params, callback) {
+
+      var queryStr = 'insert into messages(message, userID, roomname) \
+      value (?, (select id from users where username = ? limit 1), ?)';
+
+    db.query(queryStr, params, function(err, results) {
+        if (err) {
+          callback(err);
+        } else {
+          callback(results);
+        }
+      });
+    }
   },
 
   users: {
-    // Ditto as above.
-    get: function () {},
-    post: function () {}
+    get: function (callback) {
+      var queryStr = 'select * from users';
+      db.query(queryStr, function(err, results) {
+        if (err) {
+          callback(err);
+        } else {
+          callback(results);
+        }
+      });
+    },
+
+    post: function (params, callback) {
+      var queryStr = 'insert into users(username) values (?)';
+      db.query(queryStr, params, function(err, results) {
+        if (err) {
+          callback(err);
+        } else {
+          callback(results);
+        }
+      })
+    }
   }
 };
 
 
-//from w3schools
-con.connect(function(err) {
-  if (err) throw err;
-  con.query("SELECT name, address FROM customers", function (err, result, fields) {
-    if (err) throw err;
-    console.log(result);
-  });
-});
 
 
-// helper function to write messages to file on server
-var writeMessage = function() {
-  var savedMessage = JSON.stringify(messages);
-  fs.writeFile('filePath', savedMessage, 'utf8', function(err) {
-    if (err) {
-      return;
-    }
-  });
-};
+
 
