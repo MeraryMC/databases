@@ -21,6 +21,9 @@ app.use(parser.json());
 app.use('/classes', router);
 
 
+db.connect();
+
+
 // Serve the client files
 app.use(express.static(__dirname + '/../client'));
 
